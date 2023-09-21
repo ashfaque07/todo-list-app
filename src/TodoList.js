@@ -91,7 +91,7 @@ class TodoList extends Component {
             fontWeight: "bolder",
           }}
         >
-          TODO LIST
+          TODO LIST!!!
         </Row>
 
         <hr />
