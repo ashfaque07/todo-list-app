@@ -13,18 +13,26 @@ import Heading from "./components/Heading";
 class TodoList extends Component {
   constructor(props) {
     super(props);
-
     // Setting up state
     this.state = {
-      userInput: "",
-      list: [
-        { id: 0.5675490664201642, value: "shshds" },
-        { id: 0.5675490664201652, value: "shshds" },
-        { id: 0.5675490664201662, value: "shshds" },
-      ],
+      userInput: '',
+      list: [],
+      origin: window.location.origin,
     };
   }
 
+  async componentDidMount() {
+    await fetch(this.state.origin + '/.netlify/functions/listtask')
+      .then(async (response) => {
+        let res = await response.json();
+        this.state.list = res;
+        this.setState({
+          res,
+          userInput: '',
+        });
+      })
+      .catch((e) => console.log("Error in fetch: " + e.message));
+  }
   // Set a user input value
   updateInput(value) {
     this.setState({
@@ -33,9 +41,8 @@ class TodoList extends Component {
   }
 
   // Add item if user input in not empty
-  addItem() {
-    console.log(this.state);
-    if (this.state.userInput !== "") {
+  async addItem() {
+    if (this.state.userInput !== '') {
       const userInput = {
         // Add a random id which is used to delete
         id: Math.random(),
@@ -43,7 +50,15 @@ class TodoList extends Component {
         // Add a user value to list
         value: this.state.userInput,
       };
-
+      await fetch("http://localhost:8888/.netlify/functions/addtask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          task: "Hello",
+        }),
+      });
       // Update list
       const list = [...this.state.list];
       list.push(userInput);
@@ -51,7 +66,7 @@ class TodoList extends Component {
       // reset state
       this.setState({
         list,
-        userInput: "",
+        userInput: '',
       });
     }
   }
@@ -72,7 +87,7 @@ class TodoList extends Component {
   editItem = (index) => {
     const todos = [...this.state.list];
     const editedTodo = prompt("Edit the todo:");
-    if (editedTodo !== null && editedTodo.trim() !== "") {
+    if (editedTodo !== null && editedTodo.trim() !== '') {
       let updatedTodos = [...todos];
       updatedTodos[index].value = editedTodo;
       this.setState({
@@ -112,7 +127,7 @@ class TodoList extends Component {
                   className="mt-2"
                   onClick={() => this.addItem()}
                 >
-                  <i class="fa fa-plus"></i>
+                  <i className="fa fa-plus"></i>
                 </Button>
               </InputGroup>
             </InputGroup>
@@ -133,14 +148,14 @@ class TodoList extends Component {
                         justifyContent: "space-between",
                       }}
                     >
-                      {item.value}
+                      {item.task}
                       <span>
                         <Button
                           style={{ marginRight: "10px" }}
                           variant="light"
                           onClick={() => this.deleteItem(item.id)}
                         >
-                          <i class="fa fa-trash"></i>
+                          <i className="fa fa-trash"></i>
                         </Button>
                       </span>
                       <span>
@@ -148,7 +163,7 @@ class TodoList extends Component {
                           variant="light"
                           onClick={() => this.editItem(index)}
                         >
-                          <i class="fa fa-pen"></i>
+                          <i className="fa fa-pen"></i>
                         </Button>
                       </span>
                     </ListGroup.Item>
