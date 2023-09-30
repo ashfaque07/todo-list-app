@@ -5,7 +5,7 @@ class Heading extends Component {
     return (
       <React.Fragment>
         Todo List!!!!
-        <hr></hr>
+        <hr />
       </React.Fragment>
     );
   }

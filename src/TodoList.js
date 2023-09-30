@@ -9,7 +9,6 @@ import FormControl from "react-bootstrap/FormControl";
 import ListGroup from "react-bootstrap/ListGroup";
 
 import Heading from "./components/Heading";
-import {Greet} from "./components/Heading";
 
 class TodoList extends Component {
   constructor(props) {
@@ -19,10 +18,10 @@ class TodoList extends Component {
     this.state = {
       userInput: "",
       list: [
-        {id: 0.5675490664201642, value: 'shshds'},
-        {id: 0.5675490664201652, value: 'shshds'},
-        {id: 0.5675490664201662, value: 'shshds'},
-    ],
+        { id: 0.5675490664201642, value: "shshds" },
+        { id: 0.5675490664201652, value: "shshds" },
+        { id: 0.5675490664201662, value: "shshds" },
+      ],
     };
   }
 
@@ -94,10 +93,8 @@ class TodoList extends Component {
             fontWeight: "bolder",
           }}
         >
-         <Heading />
-         <Greet name="Hello" />
+          <Heading />
         </Row>
-        <hr />
         <Row>
           <Col md={{ span: 5, offset: 4 }}>
             <InputGroup className="mb-3">
@@ -115,7 +112,7 @@ class TodoList extends Component {
                   className="mt-2"
                   onClick={() => this.addItem()}
                 >
-                  ADD
+                  <i class="fa fa-plus"></i>
                 </Button>
               </InputGroup>
             </InputGroup>
@@ -143,16 +140,15 @@ class TodoList extends Component {
                           variant="light"
                           onClick={() => this.deleteItem(item.id)}
                         >
-                          Delete
+                          <i class="fa fa-trash"></i>
                         </Button>
                       </span>
                       <span>
-
                         <Button
                           variant="light"
                           onClick={() => this.editItem(index)}
                         >
-                          Edit
+                          <i class="fa fa-pen"></i>
                         </Button>
                       </span>
                     </ListGroup.Item>
