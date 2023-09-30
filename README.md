@@ -72,8 +72,7 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 
  "scripts": {
-    "start": "react-scripts --openssl-legacy-provider start",
-    // "start": "react-scripts start",
+    "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"

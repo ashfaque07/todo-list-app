@@ -2,6 +2,25 @@
   text-align: center;
 }
 
+.row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  font-weight: bolder;
+}
+
+.delete-icon {
+  float: right;
+  cursor: pointer;
+}
+
+.edit-icon {
+  float: right;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
 
 /* .App-header {
   background-color: #282c34;

@@ -8,6 +8,9 @@ import InputGroup from "react-bootstrap/InputGroup";
 import FormControl from "react-bootstrap/FormControl";
 import ListGroup from "react-bootstrap/ListGroup";
 
+import Heading from "./components/Heading";
+import {Greet} from "./components/Heading";
+
 class TodoList extends Component {
   constructor(props) {
     super(props);
@@ -91,9 +94,9 @@ class TodoList extends Component {
             fontWeight: "bolder",
           }}
         >
-          TODO LIST!!!
+         <Heading />
+         <Greet name="Hello" />
         </Row>
-
         <hr />
         <Row>
           <Col md={{ span: 5, offset: 4 }}>
