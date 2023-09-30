@@ -2,7 +2,12 @@ import React, { Component } from "react";
 
 class Heading extends Component {
   render() {
-    return <React.Fragment>Todo List!!!!</React.Fragment>;
+    return (
+      <React.Fragment>
+        Todo List!!!!
+        <hr></hr>
+      </React.Fragment>
+    );
   }
 }
 

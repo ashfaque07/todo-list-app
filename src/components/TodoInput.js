@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
 function TodoInput(props) {
-  const [inputText, setInputText] = useState("");
+  const [inputText, setInputText] = useState('');
   return (
     <React.Fragment>
       <input
