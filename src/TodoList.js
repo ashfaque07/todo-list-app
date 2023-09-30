@@ -15,20 +15,20 @@ class TodoList extends Component {
     super(props);
     // Setting up state
     this.state = {
-      userInput: '',
+      userInput: "",
       list: [],
       origin: window.location.origin,
     };
   }
 
   async componentDidMount() {
-    await fetch(this.state.origin + '/.netlify/functions/listtask')
+    await fetch(this.state.origin + "/.netlify/functions/listtask")
       .then(async (response) => {
         let res = await response.json();
         this.state.list = res;
         this.setState({
           res,
-          userInput: '',
+          userInput: "",
         });
       })
       .catch((e) => console.log("Error in fetch: " + e.message));
@@ -42,37 +42,34 @@ class TodoList extends Component {
 
   // Add item if user input in not empty
   async addItem() {
-    if (this.state.userInput !== '') {
+    if (this.state.userInput !== "") {
       const userInput = {
-        // Add a random id which is used to delete
-        id: Math.random(),
-
-        // Add a user value to list
-        value: this.state.userInput,
+        id: "",
+        task: this.state.userInput,
       };
-      await fetch("http://localhost:8888/.netlify/functions/addtask", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          task: "Hello",
-        }),
-      });
-      // Update list
+      // // Update list
       const list = [...this.state.list];
       list.push(userInput);
 
       // reset state
       this.setState({
         list,
-        userInput: '',
+        userInput: "",
+      });
+      await fetch(this.state.origin + "/.netlify/functions/addtask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          task: this.state.userInput,
+        }),
       });
     }
   }
 
   // Function to delete item from list use id to delete
-  deleteItem(key) {
+  async deleteItem(key) {
     const list = [...this.state.list];
 
     // Filter values and leave value which we need to delete
@@ -82,16 +79,35 @@ class TodoList extends Component {
     this.setState({
       list: updateList,
     });
+    await fetch(this.state.origin + "/.netlify/functions/deletetask", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        id: key,
+      }),
+    });
   }
 
-  editItem = (index) => {
+  editItem = async (id) => {
     const todos = [...this.state.list];
     const editedTodo = prompt("Edit the todo:");
-    if (editedTodo !== null && editedTodo.trim() !== '') {
-      let updatedTodos = [...todos];
-      updatedTodos[index].value = editedTodo;
+    if (editedTodo !== null && editedTodo.trim() !== "") {
+      let updatedTask = todos.find((e) => e.id === id);
+      updatedTask.task = editedTodo;
       this.setState({
-        list: updatedTodos,
+        list: [...todos],
+      });
+      await fetch(this.state.origin + "/.netlify/functions/edittask", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          id: id,
+          task: editedTodo,
+        }),
       });
     }
   };
@@ -137,9 +153,9 @@ class TodoList extends Component {
           <Col md={{ span: 5, offset: 4 }}>
             <ListGroup>
               {/* map over and print items */}
-              {this.state.list.map((item, index) => {
+              {this.state.list.map((item) => {
                 return (
-                  <div key={index}>
+                  <div key={item.id} id={item.id}>
                     <ListGroup.Item
                       variant="dark"
                       action
@@ -161,7 +177,7 @@ class TodoList extends Component {
                       <span>
                         <Button
                           variant="light"
-                          onClick={() => this.editItem(index)}
+                          onClick={() => this.editItem(item.id)}
                         >
                           <i className="fa fa-pen"></i>
                         </Button>
