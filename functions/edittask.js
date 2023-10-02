@@ -3,7 +3,10 @@ const Faunaservices = require("@brianmmdev/faunaservice");
 exports.handler = async (event, context) => {
   const service = new Faunaservices("fnAFOJi9RFAAUJ7gtXMWZ9GhtHHkZrtDSW8Nzcq-");
   let body = JSON.parse(event.body);
-  await service.updateRecord("products", '377301364803371088', 'ddd');
+  let updateTask = {
+    task: body.task
+  }
+  await service.updateRecord("products", body.id, updateTask);
   return {
     statusCode: 200,
     header: {
